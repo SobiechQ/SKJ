@@ -49,6 +49,8 @@ public class Main extends JFrame{
         buttonPanel.add(buttonChoose);
         buttonPanel.add(buttonSend);
         this.getContentPane().add(buttonPanel);
+
+        file = new File("C:\\Users\\mikol\\img.jpeg");
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::new);
