@@ -2,9 +2,7 @@ package ImageTransfer.Client;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +19,7 @@ public class Connection {
         this.height = image.getHeight();
         this.send();
     }
-    private static final int UDP_MAXSIZE = 100; //Bytes size of message
+    private static final int UDP_MAXSIZE = 1000; //Bytes size of message
     private void send(){
         try (DatagramSocket socket = new DatagramSocket()){
             int[] inputArray = this.integers.stream().mapToInt(i->i).toArray();
@@ -32,8 +30,7 @@ public class Connection {
 
             int packetIndex = 0;
             int totalPackets = blocks.size();
-            for (int[] block : blocks) {
-                /*
+            /*
                     METADATA
                     packetIndex indexed from 0 to blocks.size() - 1;
                     totalPackets - total number of all packets
@@ -41,12 +38,14 @@ public class Connection {
                     height
                     DataLength
                  */
-                int[] metadata = new int[]{packetIndex, totalPackets, this.width, this.height, block.length};
-                int[] metadataPlusBlock = Arrays.copyOf(metadata, metadata.length + block.length);
-                System.arraycopy(block, 0, metadataPlusBlock, metadata.length, block.length);
+            for (int i = 0; i < blocks.size(); i++) {
+//                int[] metadata = new int[]{packetIndex, totalPackets, this.width, this.height, block.length};
+//                int[] metadataPlusBlock = Arrays.copyOf(metadata, metadata.length + block.length);
+//                System.arraycopy(block, 0, metadataPlusBlock, metadata.length, block.length);
 
-                System.out.println(Arrays.toString(this.intToByteArray(metadataPlusBlock)));
-                socket.send(new DatagramPacket(this.intToByteArray(metadataPlusBlock), metadataPlusBlock.length*4, InetAddress.getByName("127.0.0.1"), 4567));
+//                System.out.println(Arrays.toString(this.intToByteArray(metadataPlusBlock)));
+//                socket.send(new DatagramPacket(this.intToByteArray(metadataPlusBlock), metadataPlusBlock.length*4, InetAddress.getByName("127.0.0.1"), 4567));
+
                 packetIndex++;
             }
 
