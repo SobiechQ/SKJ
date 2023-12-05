@@ -1,30 +1,22 @@
 package ImageTransfer.Server;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) throws Exception{
-        try(DatagramSocket socket = new DatagramSocket(4567)){
-            List<Integer> integers = new ArrayList<>();
-            Integer max = null;
-            while (max == null || integers.size() != max/100){
-                byte[] data = new byte[2000];
-                DatagramPacket packet = new DatagramPacket(data, data.length);
-                socket.receive(packet);
-                int[] recived = Main.byteToIntArray(data);
-                if (max == null)
-                    max = recived[1];
-                for (int i = 5; i < recived.length; i++) {
-                    integers.add(recived[i]);
-                }
-                System.out.println(integers.size());
+    public static void main(String[] args) {
+        try (var serverSocket = new ServerSocket(1010)) {
+            while (true) {
+                var socket = serverSocket.accept();
+                int[] recived = Main.byteToIntArray(new BufferedInputStream(socket.getInputStream()).readAllBytes());
+                ImageDrawer.draw(ImageDrawer.toBufferedImage(Arrays.stream(recived).skip(2).boxed().toList(), recived[0], recived[1]));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
     private static int[] byteToIntArray(byte[] buf) {
         int[] intArr = new int[buf.length / 4];
         int offset = 0;

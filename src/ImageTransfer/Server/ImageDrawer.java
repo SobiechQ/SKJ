@@ -30,7 +30,7 @@ public class ImageDrawer {
         ImageIcon imageIcon = new ImageIcon(bufferedImage);
         f.getContentPane().add(new JLabel(imageIcon));
         f.setSize(bufferedImage.getWidth(), bufferedImage.getHeight());
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //todo jak server to nie!
+        f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         f.setResizable(false);
         f.setVisible(true);
     }
