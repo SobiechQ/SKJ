@@ -15,7 +15,7 @@ public class Connection {
         this.send();
     }
     private void send(){
-        try (var socket = new Socket(InetAddress.getByName("127.0.0.1"), 1010)){
+        try (var socket = new Socket(InetAddress.getByName("192.168.8.100"), 1010)){
             socket.getOutputStream().write(this.intToByteArray(integers.stream().mapToInt(i->i).toArray()));
         } catch (IOException e) {
             e.printStackTrace();
